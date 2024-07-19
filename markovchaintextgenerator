@@ -1,0 +1,99 @@
+#Markov Code
+
+def load_text(filepath):
+
+    with open(filepath) as f:
+
+        return f.read().lower()
+
+ 
+
+def generateTable(data, k = 3):
+
+    T = {}
+
+    for i in range(len(data)-k):
+
+        x = data[i:i+k]
+
+        y = data[i+k]
+
+ 
+
+        if T.get(x) is None:
+
+            T[x] = {}
+
+            T[x][y] = 1
+
+        else:
+
+            if T(x).get(y) is None:
+
+                T[x][y] = 1
+
+            else:
+
+                T[x][y] += 1
+
+    return T
+
+   
+
+def FreqsToProbs(T):
+
+    for kx in T.keys():
+
+        s = sum(T[kx].values())
+
+        for k in T[kx].keys():
+
+            T[kx][k] = T[kx]/s
+
+    return T
+
+ 
+
+def trainMarkovChain(text,k=4):
+
+    T = generateTable(text, k)
+
+    T = FreqsToProbs(T)
+
+    return T
+
+   
+
+def sample_next(context, T, k):
+
+    conext = context[-k:]
+
+    if T.get(context) is None:
+
+        return " "
+
+    possible_chars = list(model.get().keys())
+
+    possible_probs = list(model.get().values())
+
+    return random.choices(possible_chars, weights= possible_probs)[0]
+
+ 
+
+def generateText(starting_sent, T, k = 4, maxLen = 100):
+
+    sentence = starting_sent
+
+    context = starting_sent[-k:]
+
+ 
+
+    for i in range(maxLen):
+
+        next_pred = sample_next(context, T, k)
+
+        sentence += next_pred
+
+        context = sentence[-k:]
+
+    return sentence
